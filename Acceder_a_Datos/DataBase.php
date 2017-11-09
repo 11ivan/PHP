@@ -32,8 +32,6 @@ class DataBase
     // We could improve it by passing the config file path as a parameter
     private function __construct()
     {
-
-
         // Load configuration as an array. Use the actual location of your configuration file
         // The configuration file should be like this:
         //[database]
