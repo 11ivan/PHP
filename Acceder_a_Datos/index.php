@@ -13,6 +13,7 @@ $db = Database::getInstance();
 $mysqli = $db->getConnection();
 
 
+
 $gestoraDB=new GestoraDataBase();
 $gestoraDB->showProducts($mysqli);
 $gestoraDB->inserProduct($mysqli);

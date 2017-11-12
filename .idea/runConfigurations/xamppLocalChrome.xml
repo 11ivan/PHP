@@ -1,0 +1,5 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="xamppLocalChrome" type="PhpWebAppRunConfigurationType" factoryName="PHP Web Application" server_name="xamppWindows" start_url="/proyectos">
+    <method />
+  </configuration>
+</component>

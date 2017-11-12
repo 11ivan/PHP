@@ -3,6 +3,7 @@
   <component name="PhpProjectServersManager">
     <servers>
       <server host="localhost" id="05ffc51e-34da-46cb-aea4-ae0913d4555d" name="xamppLocal" />
+      <server host="localhost" id="adf27bce-91c0-428c-93b7-105ffa63d959" name="xamppWindows" port="8080" />
     </servers>
   </component>
 </project>
