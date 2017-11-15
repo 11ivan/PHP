@@ -1,6 +1,6 @@
 <?php
 
-require_once "DataBase.php";
+require_once "DataBase.php.php";
 require_once "TablaProductos.php";
 require_once "GestoraDataBase.php";
 
@@ -9,7 +9,7 @@ require_once "GestoraDataBase.php";
 // And now we can use the class without preceding it with the namespace:
 // echo tabla1::COD;
 
-$db = Database::getInstance();
+$db = Conexion::getInstance();
 $mysqli = $db->getConnection();
 
 
