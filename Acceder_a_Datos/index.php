@@ -1,22 +1,33 @@
+<html>
+    <head>
+        <title>
+            Home
+        </title>
+    </head>
+    <body>
+        <ul>
+            <li><a href="AddProduct.html" >Ver producto</a> </li>
+            <li><a href="" >Añadir producto</a> </li>
+            <li><a href="" >Eliminar producto</a> </li>
+            <li><<a href="" >Modificar producto</a> </li>
+        </ul>
+    </body>
+
+</html>
+
 <?php
 
 require_once "DataBase.php";
 require_once "TablaProductos.php";
 require_once "GestoraDataBase.php";
 
-//We also could have done:
-//use \Constantes_DB\tabla1;
-// And now we can use the class without preceding it with the namespace:
-// echo tabla1::COD;
 
 $db = Database::getInstance();
 $mysqli = $db->getConnection();
-
-
-
 $gestoraDB=new GestoraDataBase();
-$gestoraDB->showProducts($mysqli);
-$gestoraDB->inserProduct($mysqli);
+//$gestoraDB->showProducts($mysqli);
+//$gestoraDB->insertProduct($mysqli);
+
 
 ?>
 
