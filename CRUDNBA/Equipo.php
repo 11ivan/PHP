@@ -19,20 +19,20 @@
 
 class Equipo
 {
-    private $_nombre;
-    private $_estadio;
+    public $_nombre;
+    public $_estadio;
 
     public function __construct(){
-        $this->_nombre="";
-        $this->_estadio="";
+
     }
 
-    public function Equipo($nombre, $estadio){
-        $this->_nombre=$nombre;
-        $this->_estadio=$estadio;
+    public function Equipo(Equipo $equipo){
+       $this->_nombre=$equipo->getNombre();
+       $this->_estadio=$equipo->getEstadio();
     }
 
-   /* public function Equipo($equipo){
+
+    /*public function Equipo(Equipo $equipo){
         $this->_nombre=$equipo->getNombre();
         $this->_estadio=$equipo->getEstadio();
     }*/

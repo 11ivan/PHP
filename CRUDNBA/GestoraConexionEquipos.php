@@ -24,7 +24,45 @@ class GestoraConexionEquipos
      * Salidas: Un array de equipos
      * Postcondiciones: El array se ha cargado con los equipos de la base de datos
      * */
+    /**
+     * @return array
+     */
     public function getEquipos(){
+        $arrayEquipos[]=Array();
+        //$arrayObject=new ArrayObject();
+        $conexion = Conexion::getInstance();
+        $mysqlConnection = $conexion->getConnection();
+        $i=0;
+
+        $sql_query = "SELECT " . \Constantes\TablaEquipos::NOMBRE . " , " . \Constantes\TablaEquipos::ESTADIO . " FROM " . \Constantes\TablaEquipos::TABLE_NAME;
+
+        $result = $mysqlConnection->query($sql_query);
+
+        if ($result->num_rows > 0) {
+            // output data of each row
+            while ($row = $result->fetch_assoc()) {
+                //$arrayObject->append(new Equipo($row[\Constantes\TablaEquipos::NOMBRE], $row[\Constantes\TablaEquipos::ESTADIO]));
+                $equipo=new Equipo();
+                $equipo->setNombre($row[\Constantes\TablaEquipos::NOMBRE]);
+                $equipo->setEstadio($row[\Constantes\TablaEquipos::ESTADIO]);
+                //$arrayEquipos[$i]=new Equipo($row[\Constantes\TablaEquipos::NOMBRE], $row[\Constantes\TablaEquipos::ESTADIO]);
+                $arrayEquipos[$i]=$equipo;
+                $i++;
+            }
+        }
+        $conexion->closeConnection();
+        return $arrayEquipos;
+    }
+
+
+    /*
+     * Proposito: Devuelve un array con los equipos de la base de datos
+     * Precondiciones: Debe haber algún equipo en la base datos
+     * Entradas: No hay
+     * Salidas: Un array de equipos
+     * Postcondiciones: El array se ha cargado con los equipos de la base de datos
+     * */
+    public function getEquipos2(){
         $arrayEquipos=null;
         $conexion = Conexion::getInstance();
         $mysqlConnection = $conexion->getConnection();
@@ -40,11 +78,12 @@ class GestoraConexionEquipos
                 $arrayEquipos[$i]=new Equipo($row[\Constantes\TablaEquipos::NOMBRE], $row[\Constantes\TablaEquipos::ESTADIO]);
             }
         }
+        $conexion->closeConnection();
         return $arrayEquipos;
     }
 
 
-        /*
+    /*
      * Proposito: Devuelve un array con los equipos de la base de datos
      * Precondiciones: Debe haber algún equipo en la base datos
      * Entradas: No hay
@@ -55,7 +94,6 @@ class GestoraConexionEquipos
         $arrayEquipos=null;
         $conexion = Conexion::getInstance();
         $mysqlConnection = $conexion->getConnection();
-        $i=0;
 
         $sql_query = "SELECT " . \Constantes\TablaEquipos::NOMBRE . " , " . \Constantes\TablaEquipos::ESTADIO . " FROM " . \Constantes\TablaEquipos::TABLE_NAME;
 
@@ -74,6 +112,7 @@ class GestoraConexionEquipos
             }
             echo '</table>';
         }
+        $conexion->closeConnection();
     }
 
 
@@ -88,32 +127,32 @@ class GestoraConexionEquipos
         $conexion = Conexion::getInstance();
         $mysqlConnection = $conexion->getConnection();
         $ok=false;
-       //$equipoInsert=new Equipo();
-       // $equipoInsert=$equipo;
-        //$equipoInsert=new Equipo($equipo);
-        //$sql_query="insert into " . \Constantes\TablaEquipos::TABLE_NAME . "(" . \Constantes\TablaEquipos::NOMBRE . "," . \Constantes\TablaEquipos::ESTADIO . ") VALUES (". $equipo->getNombre() .",".  $equipo->getEstadio() . ")";
-        //$sql_query="insert into" . \Constantes\TablaEquipos::TABLE_NAME . ( '\Constantes\TablaEquipos::NOMBRE' , '\Constantes\TablaEquipos::ESTADIO' ) VALUES ( '$equipo->getNombre()' , '$equipo->getEstadio()' )";
+        $nombre=$equipo->getNombre();
+        $estadio=$equipo->getEstadio();
+        $result=null;
+        //$sql_query="insert into " . \Constantes\TablaEquipos::TABLE_NAME . "(". \Constantes\TablaEquipos::NOMBRE .",". \Constantes\TablaEquipos::ESTADIO  .") VALUES (". $equipo->getNombre() .",". $equipo->getEstadio() .")";
+        $preparedStatement= $mysqlConnection->prepare("INSERT INTO ".\Constantes\TablaEquipos::TABLE_NAME. "(".\Constantes\TablaEquipos::NOMBRE.",".\Constantes\TablaEquipos::ESTADIO .") VALUES (?, ?)" );
+        $preparedStatement->bind_param('ss', $nombre, $estadio);
 
-        if($mysqlConnection->query($sql_query)){
+        if($preparedStatement->execute()===TRUE){
             $ok=true;
             echo 'Insertado';
         }else{
             echo 'No insertado';
         }
-        return $ok;
-    }
+        //$result=$preparedStatement->get_result();
 
-
-    /*public function inserProduct($mysqli){
-        $sql_query="insert into " . \Constantes_DB\TablaProductos::TABLE_NAME .
-            " (Nombre, Precio, Stock, ID_Categoria) values (" . 'Agua' . "," . 0.75 . "," . 'Envaseplastico 1L' . "," . 30 . "," . 1 . ")";
-
-        if($mysqli->query($sql_query)){
+       /* if($mysqlConnection->query($sql_query)===TRUE){
+            $ok=true;
             echo 'Insertado';
         }else{
             echo 'No insertado';
-        }
-    }*/
+        }*/
+        $conexion->closeConnection();
+
+        return $ok;
+    }
+
 
 
 }
