@@ -6,4 +6,5 @@
       <server host="localhost" id="adf27bce-91c0-428c-93b7-105ffa63d959" name="xamppWindows" port="8080" />
     </servers>
   </component>
+  <component name="PhpProjectSharedConfiguration" php_language_level="7" />
 </project>

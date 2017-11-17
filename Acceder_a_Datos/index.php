@@ -17,12 +17,12 @@
 
 <?php
 
-require_once "DataBase.php";
+require_once "DataBase.php.php";
 require_once "TablaProductos.php";
 require_once "GestoraDataBase.php";
 
 
-$db = Database::getInstance();
+$db = Conexion::getInstance();
 $mysqli = $db->getConnection();
 $gestoraDB=new GestoraDataBase();
 //$gestoraDB->showProducts($mysqli);
