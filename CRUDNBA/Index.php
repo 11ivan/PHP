@@ -21,19 +21,23 @@ require_once "Collection.php";
     //$gestoraConexioEquipos->muestraEquipos();
     //$arrayEquipos=$gestoraConexioEquipos->getEquipos();
 
-    if($arrayEquipos!=null) {
+    if(count($arrayEquipos)>0) {
 
-        echo '<table>';
-        echo '<tr>';
-        echo '<td>'.\Constantes\TablaEquipos::NOMBRE.'</td><td>'.Constantes\TablaEquipos::ESTADIO.'</td>';
-        echo '<tr>';
+        echo '<table border="1">';
+        echo '<tbody>';
+        //echo '<th>';
+        echo '<tr><td >'.\Constantes\TablaEquipos::NOMBRE.'</td><td>'.Constantes\TablaEquipos::ESTADIO.'</td></tr>';
+        //echo '</th>';
         for ($i=0;$i<count($arrayEquipos);$i++) {
             $equipo=$arrayEquipos[$i];
 
             echo '<tr>';
             echo '<td>'.$equipo->getNombre().'</td><td>'.$equipo->getEstadio().'</td>';
-            echo '<tr>';
+            echo '</tr>';
+            echo '<a href="#" target="_blank" ><img src="images/delete.png" style="width:40px;height:40px;border:0;"/></a>';
+
         }
+        echo '</tbody>';
         echo '</table>';
 
     }

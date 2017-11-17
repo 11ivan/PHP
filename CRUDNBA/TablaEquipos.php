@@ -11,7 +11,7 @@ namespace Constantes;
 
 class TablaEquipos
 {
-    const TABLE_NAME="equipos";
+    const TABLE_NAME="Equipos";
     const NOMBRE="Nombre";
     const ESTADIO="Estadio";
 }
