@@ -18,8 +18,8 @@ class GestoraAddEquipo
      * */
      public function compruebaCadena($cadena){
          $valida=false;
-
-         if (is_numeric($cadena)===false && strlen($cadena)>0 ) {
+         $cadenaSinEspacios=str_replace(" ", "", $cadena);
+         if (is_numeric($cadenaSinEspacios)===false && strlen($cadenaSinEspacios)>0 ) {
             $valida=true;
          }
         return $valida;

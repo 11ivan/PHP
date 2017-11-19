@@ -5,11 +5,36 @@
     <title>Equipos</title>
 </head>
 <body>
-<!--
-Esta es solo de pruebas!!!
--->
-<!--<a href="AñadirEquipo.html" target="_blank" ><img src="images/iconoadd.png" style="width:128px;height:128px;border:0;"/></a>-->
-redirige
+
+<?php
+require_once "GestoraConexionEquipos.php";
+require_once "TablaEquipos.php";
+require_once "Equipo.php";
+require_once "Collection.php";
+$gestoraConexioEquipos=new GestoraConexionEquipos();
+$arrayEquipos=$gestoraConexionEquipos->getEquipos();?>
+
+<?php if(count($arrayEquipos)>0) { ?>
+
+<table border="1" border-collapse="collapse">'
+    <tbody>
+        <tr><td > <?php \Constantes\TablaEquipos::NOMBRE?> </td><td> <?php Constantes\TablaEquipos::ESTADIO ?> </td></tr>
+    <?php for ($i=0;$i<count($arrayEquipos);$i++) {
+    $equipo=$arrayEquipos[$i]; ?>
+
+    <tr>
+        <td> <?php $equipo->getNombre() ?> </td><td> <?php $equipo->getEstadio()?> </td><td> <button name="$boton[]"><img src="images/delete.png" style="width:20px;height:20px;border:0;"/></button> </td>'
+    </tr>
+    <?php } ?>
+   </tbody>
+</table>
+
+<?php } ?>
+
+
+
+<a href="AñadirEquipo.html" target="_blank" ><img src="images/iconoadd.png" style="width:40px;height:40px;border:0;"/></a>
+
 
 </body>
 </html>
