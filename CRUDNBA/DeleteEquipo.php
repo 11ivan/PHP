@@ -14,16 +14,16 @@ $nombreEquipo=$_GET['equipo'];
 //$gestoraDelete=new GestoraDeleteEquipos();
 
 if($gestoraConexionEquipos->exists($nombreEquipo)){
-
+//$gestoraConexionEquipos->deleteEquipo();
     //Confirmar si desea eliminar
-    echo '<script>if(confirm("El equipo se eliminará de la base de datos")){ <?php $gestoraConexionEquipos->deleteEquipo($nombreEquipo);  ?> }</script> ';
+/*    echo '<script>if(confirm("El equipo se eliminará de la base de datos")){ <? $gestoraConexionEquipos->deleteEquipo($nombreEquipo); ?> }</script> ';*/
 
 
-    /*if($gestoraConexionEquipos->deleteEquipo($nombreEquipo)){
+    if($gestoraConexionEquipos->deleteEquipo($nombreEquipo)){
         echo 'El equipo se ha eliminado de la base de datos';
     }else{
         echo 'No se ha podido eliminar el equipo de la base de datos';
-    }*/
+    }
     echo '<meta http-equiv="refresh" content="1;Index.php">';
 }
 

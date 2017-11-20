@@ -28,7 +28,7 @@ class GestoraConexionEquipos
      * @return array
      */
     public function getEquipos(){
-        $arrayEquipos[]=Array();
+        $arrayEquipos=Array();
         //$arrayObject=new ArrayObject();
         $conexion = Conexion::getInstance();
         $mysqlConnection = $conexion->getConnection();
