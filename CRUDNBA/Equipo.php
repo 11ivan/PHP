@@ -19,8 +19,8 @@
 
 class Equipo
 {
-    public $_nombre;
-    public $_estadio;
+    private $_nombre;
+    private $_estadio;
 
     public function __construct(){
 

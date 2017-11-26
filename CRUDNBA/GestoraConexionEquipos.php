@@ -9,6 +9,7 @@
 require_once "TablaEquipos.php";
 require_once "Equipo.php";
 require_once "Conexion.php";
+require_once "Jugador.php";
 
 class GestoraConexionEquipos
 {
@@ -52,6 +53,38 @@ class GestoraConexionEquipos
         }
         $conexion->closeConnection();
         return $arrayEquipos;
+    }
+
+    /*
+     * Proposito: Dado un nombre de equipo devuelve el equipo asociado en la base de datos
+     * Precondiciones: Debe haber algún equipo en la base datos
+     * Entradas: No hay
+     * Salidas: Un array de equipos
+     * Postcondiciones: El array se ha cargado con los equipos de la base de datos
+     * */
+    /**
+     * @return Equipo
+     */
+    public function getEquipo(string $nombre)
+    {
+        $conexion = Conexion::getInstance();
+        $mysqlConnection = $conexion->getConnection();
+        $sql_query = "SELECT " . \Constantes\TablaEquipos::NOMBRE . " , " . \Constantes\TablaEquipos::ESTADIO . " FROM " . \Constantes\TablaEquipos::TABLE_NAME .
+                    " WHERE " . \Constantes\TablaEquipos::NOMBRE. "=?";
+        $preparedStatement=$mysqlConnection->prepare($sql_query);
+        //$result = $mysqlConnection->query($sql_query);
+        $preparedStatement->bind_param('s', $nombre);
+        $preparedStatement->execute();
+        $result=$preparedStatement->get_result();
+        if ($result->num_rows > 0) {
+            // output data of each row
+            $row = $result->fetch_assoc();
+            $equipo = new Equipo();
+            $equipo->setNombre($row[\Constantes\TablaEquipos::NOMBRE]);
+            $equipo->setEstadio($row[\Constantes\TablaEquipos::ESTADIO]);
+        }
+        $conexion->closeConnection();
+        return $equipo;
     }
 
 
@@ -166,6 +199,7 @@ class GestoraConexionEquipos
         }
         return $existe;
     }
+
 
 
 }

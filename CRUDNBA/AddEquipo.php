@@ -9,13 +9,10 @@
 require_once "GestoraConexionEquipos.php";
 require_once "Equipo.php";
 require_once "GestoraAddEquipo.php";
-require_once "Collection.php";
 
 $gestoraConexionEquipos=new GestoraConexionEquipos();
 $gestoraAddEquipo=new GestoraAddEquipo();
 $equipo = new Equipo();
-$collection=new Collection();
-
 //echo $_POST["nombreEquipo"] . $_POST["nombreEstadio"];
 $nombre=$_POST["nombreEquipo"];
 $estadio=$_POST["nombreEstadio"];
