@@ -18,10 +18,10 @@ echo    '<label>Nombre: </label><input type="text" name="nombreJugador" required
 echo    '<label>Apellidos: </label><input type="text" name="apellidosJugador" required></br>';
 echo    '<label>Fecha Nacimiento: </label><input type="date" name="fechaNacimiento" required></br>';
 
-echo    '<select>';
+echo    '<select name="nombreEquipo">';
             for($i=0;$i<count($arrayEquipos);$i++){
                 $equipo=$arrayEquipos[$i];
-                echo'<option name="nombreEquipo">'. $equipo->getNombre() .'</option>';
+                echo'<option>'. $equipo->getNombre() .'</option>';
             }
 echo    '</select>';
 

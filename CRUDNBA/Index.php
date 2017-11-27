@@ -31,7 +31,7 @@ require_once "GestoraConexionJugadores.php";
             $nombre=$equipo->getNombre();
             echo '<tr>';
             echo '<td>'.$equipo->getNombre().'</td><td>'.$equipo->getEstadio().'</td><td>'.$gestoraConexionJugadores->countJugadoresEquipo($nombre).'</td>';
-            echo '<td>'. "<a href='DeleteEquipo.php?equipo=$nombre'><img src=\"images/delete.png\" style=\"width:20px;height:20px;border:0;\"/></a>" .'</td>';
+            echo '<td>'. "<a href='ConfirmaEliminarEquipo.php?equipo=$nombre'><img src=\"images/delete.png\" style=\"width:20px;height:20px;border:0;\"/></a>" .'</td>';
             echo '<td>'. "<a href='InfoEquipo.php?equipo=$nombre'> <img src=\"images/info.png\" style=\"width:20px;height:20px;border:0;\" /></a>" .'</td>';
             echo '</tr>';
            // echo '<a href="#" target="_blank" ><img src="images/delete.png" style="width:40px;height:40px;border:0;"/></a>';

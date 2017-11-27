@@ -23,10 +23,18 @@ $jugador=new Jugador();
 if($gestoraAddJugador->compruebaDatosJugador($nombre, $apellidos, $fechaNacimiento) && $gestoraConexionEquipos->exists($nombreEquipo)){
     $jugador->setNombre($nombre);
     $jugador->setApellidos($apellidos);
-    $jugador->setFechaNac($fechaNacimiento);
+    $fechaNac=new DateTime($fechaNacimiento);
+    $jugador->setFechaNac($fechaNac);
     $jugador->setIdEquipo($gestoraConexionEquipos->getIdEquipo($nombreEquipo));
-    $gestoraConexionJugadores->insertJugador($jugador);
+
+    if($gestoraConexionJugadores->insertJugador($jugador)===TRUE) {
+        echo 'Jugador insertado';
+        echo '<meta http-equiv="refresh" content="1;InfoEquipo.php?equipo='.$nombreEquipo.'">';
+    }else{
+        echo 'Jugador no insertado';
+        echo '<meta http-equiv="refresh" content="1;AñadirEquipo.php">';
+    }
 }else{
-    echo 'Jugador insertado';
-    echo '<meta http-equiv="refresh" content="1;AñadirJugador.html">';
+    echo 'Jugador no insertado';
+    echo '<meta http-equiv="refresh" content="1;AñadirEquipo.php">';
 }

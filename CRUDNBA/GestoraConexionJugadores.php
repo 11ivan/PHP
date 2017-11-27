@@ -80,14 +80,15 @@ class GestoraConexionJugadores
         $insertado=false;
         $conexion=Conexion::getInstance();
         $mySqlConnection=$conexion->getConnection();
-        $query="Insert INTO jugadores values(?, ?, ?, ?)";
+        $query="Insert INTO Jugadores (Nombre, Apellidos, Id_Equipo, FechaNacimiento) values(?, ?, ?, ?)";
         $preparedStatement=$mySqlConnection->prepare($query);
-        $preparedStatement->bind_param('s', $jugador->getNombre());
-        $preparedStatement->bind_param('s', $jugador->getApellidos());
-        $preparedStatement->bind_param('i', $jugador->getFechaNac());
+        $nombre=$jugador->getNombre();
+        $apellidos=$jugador->getApellidos();
+        $fechaNac=$jugador->getFechaNac()->format('Y-m-d');
+        $idEquipo=$jugador->getIdEquipo();
+        $preparedStatement->bind_param('ssis', $nombre, $apellidos, $idEquipo, $fechaNac);
         $preparedStatement->execute();
-        $result=$preparedStatement->get_result();
-        if($result->num_rows>0){
+        if($preparedStatement->affected_rows>0){
             $insertado=true;
         }
         return $insertado;

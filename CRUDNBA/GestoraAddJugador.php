@@ -18,7 +18,7 @@ class GestoraAddJugador
      * Salidas: Un booleano
      * Postcondiciones: El booleano será verdadero si los datos del jugador son correctos, sino false
      * */
-    public function compruebaDatosJugador(string $nombre, string $apellidos, DateTime $fechaNac){
+    public function compruebaDatosJugador(string $nombre, string $apellidos, string $fechaNac){
         $vale=false;
 
         if($this->compruebaCadena($nombre) && $this->compruebaCadena($apellidos) && $this->compruebaFecha($fechaNac)){
@@ -52,10 +52,11 @@ class GestoraAddJugador
      * Salidas: Un booleano
      * Postcondiciones: El booleano será verdadero si la diferencia entre las fechas es mayor o igual que 18 false sino
      * */
-    public function compruebaFecha(DateTime $fecha){
+    public function compruebaFecha(string $fecha){
         $vale=false;
         $fechaAct=new DateTime("now");
-        $interval=$fecha->diff($fechaAct);
+        $fechaNac=new DateTime($fecha);
+        $interval=$fechaNac->diff($fechaAct);
         $years=$interval->y;
         if($years>=18){
             $vale=true;

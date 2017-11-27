@@ -211,7 +211,7 @@ class GestoraConexionEquipos
         $id=-1;
         $conexion=Conexion::getInstance();
         $mySqlConnection=$conexion->getConnection();
-        $preparedStatement=$mySqlConnection->prepare("SELECT id FROM equipos WHERE nombre=?");
+        $preparedStatement=$mySqlConnection->prepare("SELECT id FROM Equipos WHERE nombre=?");
         $preparedStatement->bind_param('s', $nombreEquipo);
         $preparedStatement->execute();
         $result=$preparedStatement->get_result();
