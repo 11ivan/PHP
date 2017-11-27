@@ -200,6 +200,28 @@ class GestoraConexionEquipos
         return $existe;
     }
 
+    /*
+     * Proposito: Recibe el nombre de un equipo y devuelve el id del mismo
+     * Precondiciones: El quipo existe en la base de datos
+     * Entradas: Una cadena que será el nombre del equipo
+     * Salidas: Un entero
+     * Postcondiciones: El entero será el id del equipo, -1 si ocurre algún  problema
+     * */
+    public function getIdEquipo(string $nombreEquipo){
+        $id=-1;
+        $conexion=Conexion::getInstance();
+        $mySqlConnection=$conexion->getConnection();
+        $preparedStatement=$mySqlConnection->prepare("SELECT id FROM equipos WHERE nombre=?");
+        $preparedStatement->bind_param('s', $nombreEquipo);
+        $preparedStatement->execute();
+        $result=$preparedStatement->get_result();
+
+        if($result->num_rows>0){
+            $row=$result->fetch_assoc();
+            $id=$row['id'];
+        }
+        return $id;
+    }
 
 
 }

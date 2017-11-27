@@ -6,8 +6,29 @@
  * Time: 23:23
  */
 
+require_once "Jugador.php";
+
 class GestoraAddJugador
 {
+
+    /*
+     * Proposito: Comprueba que todos los datos del jugador sean correctos
+     * Precondiciones: No hay
+     * Entradas: Un Jugador
+     * Salidas: Un booleano
+     * Postcondiciones: El booleano será verdadero si los datos del jugador son correctos, sino false
+     * */
+    public function compruebaDatosJugador(string $nombre, string $apellidos, DateTime $fechaNac){
+        $vale=false;
+
+        if($this->compruebaCadena($nombre) && $this->compruebaCadena($apellidos) && $this->compruebaFecha($fechaNac)){
+            $vale=true;
+        }
+
+        return $vale;
+    }
+
+
     /*
      * Proposito: Comprueba que una cadena no contenga números y su longitud sea mayor que 0
      * Precondiciones:
@@ -31,9 +52,15 @@ class GestoraAddJugador
      * Salidas: Un booleano
      * Postcondiciones: El booleano será verdadero si la diferencia entre las fechas es mayor o igual que 18 false sino
      * */
-    public function compruebaFecha($fecha){
-
-
+    public function compruebaFecha(DateTime $fecha){
+        $vale=false;
+        $fechaAct=new DateTime("now");
+        $interval=$fecha->diff($fechaAct);
+        $years=$interval->y;
+        if($years>=18){
+            $vale=true;
+        }
+        return $vale;
     }
 
 

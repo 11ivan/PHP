@@ -40,6 +40,6 @@ if(count($arrayJugadores)>0) {
     echo '</tbody>';
     echo '</table>';
 
-    echo '</br><a href="AñadirJugador.php" target="_blank" ><img src="images/iconoadd.png" style="width:40px;height:40px;border:0;"/></a>';
-    echo '</br><a href="Index.php"><img src="images/info.png" style="width:20px;height:20px;border:0;" /></a>';
+    echo '</br><a href="AñadirJugador.php" target="_blank" ><img src="images/iconoadd.png" style="width:20px;height:20px;border:0;"/></a>';
+    echo '</br><a href="Index.php"><img src="images/home.png" style="width:20px;height:20px;border:0;" /></a>';
 }

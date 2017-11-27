@@ -24,7 +24,7 @@ class GestoraConexionJugadores
         $mySqlConnection=$conexion->getConnection();
         /*select COUNT(J.ID) from equipos as E INNER JOIN
             jugadores as J ON E.ID=J.ID_Equipo WHERE E.Nombre*/
-        $query="SELECT J.ID from equipos as E INNER JOIN jugadores as J ON E.ID=J.ID_Equipo WHERE E.Nombre=?";
+        $query="SELECT J.ID from Equipos as E INNER JOIN Jugadores as J ON E.ID=J.ID_Equipo WHERE E.Nombre=?";
         $preparedStatement=$mySqlConnection->prepare($query);
         $preparedStatement->bind_param('s', $nombreEquipo);
         $preparedStatement->execute();
@@ -45,7 +45,7 @@ class GestoraConexionJugadores
     public function getJugadores(string $nombreEquipo){
         $conexion=Conexion::getInstance();
         $mySqlConnection=$conexion->getConnection();
-        $query="SELECT J.Nombre, J.Apellidos, J.FechaNacimiento from equipos as E INNER JOIN jugadores as J ON E.ID=J.ID_Equipo WHERE E.Nombre=?";
+        $query="SELECT J.Nombre, J.Apellidos, J.FechaNacimiento from Equipos as E INNER JOIN Jugadores as J ON E.ID=J.ID_Equipo WHERE E.Nombre=?";
         $preparedStatement=$mySqlConnection->prepare($query);
         $preparedStatement->bind_param('s', $nombreEquipo);
         $preparedStatement->execute();
@@ -75,15 +75,24 @@ class GestoraConexionJugadores
      * Postcondiciones: El booleano será verdadero si el Jugador se ha insertado correctamente
      * */
     public function insertJugador(Jugador $jugador){
+        /*FROM_UNIXTIME(?))");
+        $stmt->bind_param("i", $your_date_parameter);*/
+        $insertado=false;
         $conexion=Conexion::getInstance();
         $mySqlConnection=$conexion->getConnection();
         $query="Insert INTO jugadores values(?, ?, ?, ?)";
         $preparedStatement=$mySqlConnection->prepare($query);
         $preparedStatement->bind_param('s', $jugador->getNombre());
+        $preparedStatement->bind_param('s', $jugador->getApellidos());
+        $preparedStatement->bind_param('i', $jugador->getFechaNac());
         $preparedStatement->execute();
         $result=$preparedStatement->get_result();
-
+        if($result->num_rows>0){
+            $insertado=true;
+        }
+        return $insertado;
     }
+
 
 
 

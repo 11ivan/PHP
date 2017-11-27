@@ -8,15 +8,25 @@
 
 require_once "Jugador.php";
 require_once "GestoraAddJugador.php";
+require_once "GestoraConexionJugadores.php";
+require_once "GestoraConexionEquipos.php";
 
+$gestoraConexionJugadores=new GestoraConexionJugadores();
+$gestoraConexionEquipos=new GestoraConexionEquipos();
 $gestoraAddJugador=new GestoraAddJugador();
 $nombre=$_POST['nombreJugador'];
 $apellidos=$_POST['apellidosJugador'];
 $fechaNacimiento=$_POST['fechaNacimiento'];
 $nombreEquipo=$_POST['nombreEquipo'];
+$jugador=new Jugador();
 
-if($gestoraAddJugador->compruebaCadena($nombre) && $gestoraAddJugador->compruebaCadena($apellidos)){
-
+if($gestoraAddJugador->compruebaDatosJugador($nombre, $apellidos, $fechaNacimiento) && $gestoraConexionEquipos->exists($nombreEquipo)){
+    $jugador->setNombre($nombre);
+    $jugador->setApellidos($apellidos);
+    $jugador->setFechaNac($fechaNacimiento);
+    $jugador->setIdEquipo($gestoraConexionEquipos->getIdEquipo($nombreEquipo));
+    $gestoraConexionJugadores->insertJugador($jugador);
 }else{
+    echo 'Jugador insertado';
     echo '<meta http-equiv="refresh" content="1;AñadirJugador.html">';
 }
