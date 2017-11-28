@@ -2,11 +2,11 @@
 /**
  * Created by PhpStorm.
  * User: icastillo
- * Date: 16/11/2017
- * Time: 20:37
+ * Date: 28/11/2017
+ * Time: 20:11
  */
 
-class GestoraAddEquipo
+class Util
 {
 
     /*
@@ -16,14 +16,15 @@ class GestoraAddEquipo
      * Salidas: Un booleano
      * Postcondiciones: El booleano será verdadero si la cadena es valida, sino false
      * */
-     public function compruebaCadena($cadena){
-         $valida=false;
-         $cadenaSinEspacios=str_replace(" ", "", $cadena);
-         if (is_numeric($cadenaSinEspacios)===false && strlen($cadenaSinEspacios)>0 ) {
+    public function compruebaCadena($cadena){
+        $valida=false;
+        $cadenaSinEspacios=str_replace(" ", "", $cadena);
+        if (is_numeric($cadenaSinEspacios)===false && strlen($cadenaSinEspacios)>0 ) {
             $valida=true;
-         }
+        }
         return $valida;
-     }
+    }
+
 
 
 }

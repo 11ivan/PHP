@@ -28,7 +28,7 @@ if($respuesta=="Si"){
         echo '<meta http-equiv="refresh" content="1;Index.php">';
     }
 }else{
-    echo '<meta http-equiv="refresh" content="1;Index.php">';
+    echo '<meta http-equiv="refresh" content="0;Index.php">';
 }
 
 

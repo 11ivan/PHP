@@ -31,10 +31,10 @@ if($gestoraAddJugador->compruebaDatosJugador($nombre, $apellidos, $fechaNacimien
         echo 'Jugador insertado';
         echo '<meta http-equiv="refresh" content="1;InfoEquipo.php?equipo='.$nombreEquipo.'">';
     }else{
-        echo 'Jugador no insertado';
-        echo '<meta http-equiv="refresh" content="1;AñadirEquipo.php">';
+        echo 'La inserción no se realizó';
+        echo '<meta http-equiv="refresh" content="1;InfoEquipo.php?equipo='.$nombreEquipo.'">';
     }
 }else{
-    echo 'Jugador no insertado';
-    echo '<meta http-equiv="refresh" content="1;AñadirEquipo.php">';
+    echo 'Algún dato no es correcto o el equipo ya existe';
+    echo '<meta http-equiv="refresh" content="1;InfoEquipo.php?equipo='.$nombreEquipo.'">';
 }

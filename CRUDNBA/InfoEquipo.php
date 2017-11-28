@@ -32,7 +32,7 @@ if(count($arrayJugadores)>0) {
         $nombre=$jugador->getNombre();
         echo '<tr>';
         echo '<td>'.$jugador->getNombre().'</td><td>'.$jugador->getApellidos().'</td><td>'.$jugador->getAge().'</td>';
-        echo '<td>'. "<a href='DeleteJugador.php?jugador=$nombre'><img src=\"images/delete.png\" style=\"width:20px;height:20px;border:0;\"/></a>" .'</td>';
+        echo '<td>'. "<a href='ConfirmaEliminarJugador.php?jugador=$nombre'><img src=\"images/delete.png\" style=\"width:20px;height:20px;border:0;\"/></a>" .'</td>';
         echo '<td>'. "<a href='EditJugador.php?jugador=$nombre'> <img src=\"images/info.png\" style=\"width:20px;height:20px;border:0;\" /></a>" .'</td>';
         echo '</tr>';
         // echo '<a href="#" target="_blank" ><img src="images/delete.png" style="width:40px;height:40px;border:0;"/></a>';

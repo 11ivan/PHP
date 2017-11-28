@@ -8,10 +8,10 @@
 
 require_once "GestoraConexionEquipos.php";
 require_once "Equipo.php";
-require_once "GestoraAddEquipo.php";
+require_once "Util.php";
 
 $gestoraConexionEquipos=new GestoraConexionEquipos();
-$gestoraAddEquipo=new GestoraAddEquipo();
+$util=new Util();
 $equipo = new Equipo();
 //echo $_POST["nombreEquipo"] . $_POST["nombreEstadio"];
 $nombre=$_POST["nombreEquipo"];
@@ -27,7 +27,7 @@ $estadio=$_POST["nombreEstadio"];
     echo '<meta http-equiv="refresh" content="5;AñadirEquipo.html">';
 }*/
 
-if ($gestoraAddEquipo->compruebaCadena($nombre)===true && $gestoraAddEquipo->compruebaCadena($estadio)===true) {
+if ($util->compruebaCadena($nombre)===true && $util->compruebaCadena($estadio)===true) {
     $equipo->setNombre($nombre);
     $equipo->setEstadio($estadio);
     $gestoraConexionEquipos->addEquipo($equipo);

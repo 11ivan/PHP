@@ -6,7 +6,7 @@
  * Time: 19:42
  */
 require_once "Jugador.php";
-
+require_once "Conexion.php";
 
 class GestoraConexionJugadores
 {
@@ -94,6 +94,51 @@ class GestoraConexionJugadores
         return $insertado;
     }
 
+    /*
+     * Proposito: Elimina un jugador de la tabla Jugadores
+     * Precondiciones: El jugador existe en la base de datos
+     * Entradas: Una cadena que será el nombre del jugador
+     * Salidas: Un booleano
+     * Postcondiciones: El booleano será verdadero si el Jugador se ha eliminado correctamente
+     * */
+    public function deleteJugador(string $nombreJugador){
+        $eliminado=false;
+
+        $conexion=Conexion::getInstance();
+        $mySqlConnection=$conexion->getConnection();
+        $query="Delete from jugadores WHERE Nombre=?";
+        $preparedStatement=$mySqlConnection->prepare($query);
+        $preparedStatement->bind_param('s', $nombreJugador);
+        $preparedStatement->execute();
+        if($preparedStatement->affected_rows>0){
+            $eliminado=true;
+        }
+        return $eliminado;
+    }
+
+
+    /*
+     * Proposito: Dado un nombre de jugador comprueba si existe en la base de datos
+     * Precondiciones: El nombre no puede estar vacío
+     * Entradas: Una cadena
+     * Salidas: Un booleano
+     * Postcondiciones: El booleano será verdadero si el Jugador existe en la base de datos, false sino
+     * */
+    public function exists(string $nombreJugador){
+        $existe=false;
+        $conexion=Conexion::getInstance();
+        $mySqlConnection=$conexion->getConnection();
+        $query="SELECT Nombre from jugadores WHERE Nombre=?";
+        $preparedStatement=$mySqlConnection->prepare($query);
+        $preparedStatement->bind_param('s', $nombreJugador);
+        $preparedStatement->execute();
+        $result=$preparedStatement->get_result();
+        if($result->num_rows>0){
+            $existe=true;
+        }
+        //$conexion->closeConnection();
+        return $existe;
+    }
 
 
 
