@@ -37,7 +37,7 @@ class GestoraDataBase
     }
 
 
-    public function insertProduct($mysqli){
+    /*public function insertProduct($mysqli){
         $sql_query="insert into " . \Constantes_DB\TablaProductos::TABLE_NAME .
 <<<<<<< HEAD
                     " (Nombre, Precio, Descripcion, Stock, ID_Categoria) values ('Agua', 0.75, 'Envaseplastico 1L', 30, 1 )";
@@ -50,7 +50,7 @@ class GestoraDataBase
         }else{
             echo 'No insertado';
         }
-    }
+    }*/
 
 
 }
