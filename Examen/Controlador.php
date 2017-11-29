@@ -74,7 +74,8 @@ class Controlador
                     $respuesta[2]=$arrayCampos[1];
                     $respuesta[3]=$arrayCampos[2];
 
-                echo '<meta http-equiv="refresh" content="1;VistaResultado.php?respuesta='.$respuesta.'">';
+                echo '<meta http-equiv="refresh" content="1;VistaResultado.php?respuesta='.$respuesta[0].'">';
+                //echo '<meta http-equiv="refresh" content="1;InfoEquipo.php?equipo='.$nombreEquipo.'">';
                 break;
 
             case 2:
@@ -88,7 +89,7 @@ class Controlador
                 break;
         }
 
-        return $respuesta;
+        //return $respuesta;
     }
 
 }
