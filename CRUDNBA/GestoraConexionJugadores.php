@@ -78,7 +78,7 @@ class GestoraConexionJugadores
         /*FROM_UNIXTIME(?))");
         $stmt->bind_param("i", $your_date_parameter);*/
         $insertado=false;
-        $conexion=Conexion::getInstance();
+        $conexion=DatabaseModel::getInstance();
         $mySqlConnection=$conexion->getConnection();
         $query="Insert INTO Jugadores (Nombre, Apellidos, Id_Equipo, FechaNacimiento) values(?, ?, ?, ?)";
         $preparedStatement=$mySqlConnection->prepare($query);

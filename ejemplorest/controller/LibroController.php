@@ -41,4 +41,22 @@ class LibroController extends Controller
 
     }
 
+
+    public function managePostVerb(Request $request)
+    {
+        $parameters=$request->getBodyParameters();
+        $libro=new LibroModel($parameters->titulo, $parameters->numpag);
+
+        //Realizar insercion del libro
+
+        if(LibroHandlerModel::insertLibro($libro)){
+            $code="201";
+        }else{
+            $code="400";
+            $libro=null;
+        }
+        $response = new Response($code, null, $libro, $request->getAccept());
+        $response->generate();
+    }
+
 }

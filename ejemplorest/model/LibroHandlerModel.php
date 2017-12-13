@@ -30,7 +30,6 @@ class LibroHandlerModel
                 . \ConstantesDB\ConsLibrosModel::TITULO . ","
                 . \ConstantesDB\ConsLibrosModel::PAGS . " FROM " . \ConstantesDB\ConsLibrosModel::TABLE_NAME;
 
-
             if ($id != null) {
                 $query = $query . " WHERE " . \ConstantesDB\ConsLibrosModel::COD . " = ?";
             }
@@ -86,5 +85,29 @@ class LibroHandlerModel
         }
         return $res;
     }
+
+    /*
+ * Proposito: Inserta un jugador en la tabla Jugadores
+ * Precondiciones: Todos los datos del jugador son correctos
+ * Entradas: Un Jugador
+ * Salidas: Un booleano
+ * Postcondiciones: El booleano será verdadero si el Jugador se ha insertado correctamente
+ * */
+    public static function insertLibro(LibroModel $libro){
+        $insertado=false;
+        $conexion=DatabaseModel::getInstance();
+        $mySqlConnection=$conexion->getConnection();
+        $query="Insert INTO Libros (titulo, NumeroPaginas) values(?, ?)";
+        $preparedStatement=$mySqlConnection->prepare($query);
+        $titulo=$libro->getTitulo();
+        $paginas=$libro->getNumpag();
+        $preparedStatement->bind_param('si', $titulo, $paginas);
+        $preparedStatement->execute();
+        if($preparedStatement->affected_rows>0){
+            $insertado=true;
+        }
+        return $insertado;
+    }
+
 
 }

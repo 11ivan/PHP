@@ -7,7 +7,7 @@ class LibroModel implements JsonSerializable
     private $codigo;
     private $numpag;
 
-    public function __construct($cod,$tit,$pag)
+    public function __construct($tit,$pag, $cod=-1)
     {
         $this->codigo=$cod;
         $this->titulo=$tit;
