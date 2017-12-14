@@ -7,7 +7,6 @@ class LibroController extends Controller
 {
     public function manageGetVerb(Request $request)
     {
-
         $listaLibros = null;
         $id = null;
         $response = null;
@@ -18,14 +17,11 @@ class LibroController extends Controller
             $id = $request->getUrlElements()[2];
         }
 
-
         $listaLibros = LibroHandlerModel::getLibro($id);
 
         if ($listaLibros != null) {
             $code = '200';
-
         } else {
-
             //We could send 404 in any case, but if we want more precission,
             //we can send 400 if the syntax of the entity was incorrect...
             if (LibroHandlerModel::isValid($id)) {
@@ -35,10 +31,8 @@ class LibroController extends Controller
             }
 
         }
-
         $response = new Response($code, null, $listaLibros, $request->getAccept());
         $response->generate();
-
     }
 
 

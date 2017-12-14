@@ -13,7 +13,6 @@ class LibroHandlerModel
         $db = DatabaseModel::getInstance();
         $db_connection = $db->getConnection();
 
-
         //IMPORTANT: we have to be very careful about automatic data type conversions in MySQL.
         //For example, if we have a column named "cod", whose type is int, and execute this query:
         //SELECT * FROM table WHERE cod = "3yrtdf"
@@ -57,7 +56,7 @@ class LibroHandlerModel
             $prep_query->bind_result($cod, $tit, $pag);
             while ($prep_query->fetch()) {
                 $tit = utf8_encode($tit);
-                $libro = new LibroModel($cod, $tit, $pag);
+                $libro = new LibroModel($tit, $pag, $cod);
                 $listaLibros[] = $libro;
             }
 
