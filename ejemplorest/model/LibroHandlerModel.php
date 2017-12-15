@@ -56,7 +56,7 @@ class LibroHandlerModel
             $prep_query->bind_result($cod, $tit, $pag);
             while ($prep_query->fetch()) {
                 $tit = utf8_encode($tit);
-                $libro = new LibroModel($tit, $pag, $cod);
+                $libro = new LibrosModel($tit, $pag, $cod);
                 $listaLibros[] = $libro;
             }
 
@@ -86,12 +86,12 @@ class LibroHandlerModel
     }
 
     /*
- * Proposito: Inserta un jugador en la tabla Jugadores
- * Precondiciones: Todos los datos del jugador son correctos
- * Entradas: Un Jugador
- * Salidas: Un booleano
- * Postcondiciones: El booleano será verdadero si el Jugador se ha insertado correctamente
- * */
+     * Proposito: Inserta un Libro en la tabla Libros
+     * Precondiciones: Todos los datos del libro son correctos
+     * Entradas: Un LibrosModel
+     * Salidas: Un booleano
+     * Postcondiciones: El booleano será verdadero si el libro se ha insertado correctamente
+     * */
     public static function insertLibro(LibroModel $libro){
         $insertado=false;
         $conexion=DatabaseModel::getInstance();
@@ -107,6 +107,33 @@ class LibroHandlerModel
         }
         return $insertado;
     }
+
+    /*
+    * Proposito: Actualiza un Libro en la tabla Libros
+    * Precondiciones: Todos los datos del libro son correctos
+    * Entradas: Un LibrosModel
+    * Salidas: Un booleano
+    * Postcondiciones: El booleano será verdadero si el libro se ha insertado correctamente
+    * */
+    public static function updateLibro(LibroModel $libro){
+        $actualizado=false;
+        $conexion=DatabaseModel::getInstance();
+        $mySqlConnection=$conexion->getConnection();
+        $query="Update Libros set Titulo=?, NumeroPaginas=? where Codigo=?";
+        $preparedStatement=$mySqlConnection->prepare($query);
+
+        $titulo=$libro->getTitulo();
+        $paginas=$libro->getNumpag();
+        $codigo=$libro->getCodigo();
+        $preparedStatement->bind_param('sii', $titulo, $paginas, $codigo);
+
+        $preparedStatement->execute();
+        if($preparedStatement->affected_rows>0){
+            $actualizado=true;
+        }
+        return $actualizado;
+    }
+
 
 
 }

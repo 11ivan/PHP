@@ -39,10 +39,9 @@ class LibroController extends Controller
     public function managePostVerb(Request $request)
     {
         $parameters=$request->getBodyParameters();
-        $libro=new LibroModel($parameters->titulo, $parameters->numpag);
+        $libro=new LibrosModel($parameters->titulo, $parameters->numpag);
 
         //Realizar insercion del libro
-
         if(LibroHandlerModel::insertLibro($libro)){
             $code="201";
         }else{
@@ -52,5 +51,11 @@ class LibroController extends Controller
         $response = new Response($code, null, $libro, $request->getAccept());
         $response->generate();
     }
+
+    public function managePutVerb(Request $request){
+
+    }
+
+
 
 }

@@ -1,7 +1,7 @@
 <?php
 
 
-class LibroModel implements JsonSerializable
+class LibrosModel implements JsonSerializable
 {
     private $titulo;
     private $codigo;
