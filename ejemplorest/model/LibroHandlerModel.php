@@ -92,7 +92,7 @@ class LibroHandlerModel
      * Salidas: Un booleano
      * Postcondiciones: El booleano será verdadero si el libro se ha insertado correctamente
      * */
-    public static function insertLibro(LibroModel $libro){
+    public static function insertLibro(LibrosModel $libro){
         $insertado=false;
         $conexion=DatabaseModel::getInstance();
         $mySqlConnection=$conexion->getConnection();
@@ -115,7 +115,7 @@ class LibroHandlerModel
     * Salidas: Un booleano
     * Postcondiciones: El booleano será verdadero si el libro se ha insertado correctamente
     * */
-    public static function updateLibro(LibroModel $libro){
+    public static function updateLibro(LibrosModel $libro){
         $actualizado=false;
         $conexion=DatabaseModel::getInstance();
         $mySqlConnection=$conexion->getConnection();
@@ -127,13 +127,36 @@ class LibroHandlerModel
         $codigo=$libro->getCodigo();
         $preparedStatement->bind_param('sii', $titulo, $paginas, $codigo);
 
-        $preparedStatement->execute();
-        if($preparedStatement->affected_rows>0){
+        if($preparedStatement->execute()){
             $actualizado=true;
         }
+        /*if($preparedStatement->affected_rows>0){
+            $actualizado=true;
+        }*/
         return $actualizado;
     }
 
+    /*
+    * Proposito: Elimina un Libro en la tabla Libros
+    * Precondiciones: El id es correcto
+    * Entradas: Un LibrosModel
+    * Salidas: Un booleano
+    * Postcondiciones: El booleano será verdadero si el libro se ha insertado correctamente
+    * */
+    public static function deleteLibro(int $id){
+        $eliminado=false;
+        $conexion=DatabaseModel::getInstance();
+        $mySqlConnection=$conexion->getConnection();
+        $query="Delete from Libros where Codigo=?";
+        $preparedStatement=$mySqlConnection->prepare($query);
+
+        $preparedStatement->bind_param('i', $id);
+
+        if($preparedStatement->execute()){
+            $eliminado=true;
+        }
+        return $eliminado;
+    }
 
 
 }

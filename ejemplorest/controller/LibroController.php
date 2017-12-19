@@ -52,10 +52,45 @@ class LibroController extends Controller
         $response->generate();
     }
 
-    public function managePutVerb(Request $request){
 
+    public function managePutVerb(Request $request){
+        $parameters=$request->getBodyParameters();
+        $id=null;
+        $libro=null;
+        $code=400;
+
+        if (isset($request->getUrlElements()[2])) {
+            $id = $request->getUrlElements()[2];
+        }
+
+        if($id!=null){
+            $libro=new LibrosModel($parameters->titulo, $parameters->numpag, $id);
+            if (LibroHandlerModel::updateLibro($libro)) {
+                $code=204;
+            }
+        }
+
+        $response=new Response($code, null, null, $request->getAccept());
+        $response->generate();
     }
 
+    public function manageDeleteVerb(Request $request)
+    {
+        $id=null;
+        $code=400;
 
+        if (isset($request->getUrlElements()[2])) {
+            $id = $request->getUrlElements()[2];
+        }
+
+        if($id!=null){
+            if (LibroHandlerModel::deleteLibro($id)) {
+                $code=200;
+            }
+        }
+
+        $response=new Response($code, null, null, $request->getAccept());
+        $response->generate();
+    }
 
 }
