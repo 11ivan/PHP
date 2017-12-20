@@ -9,6 +9,7 @@ class LibroHandlerModel
     public static function getLibro($id)
     {
         $listaLibros = null;
+        $devolucion=null;
 
         $db = DatabaseModel::getInstance();
         $db_connection = $db->getConnection();
@@ -68,7 +69,12 @@ class LibroHandlerModel
         }
         $db_connection->close();
 
-        return $listaLibros;
+        if ($id!=null){
+            $devolucion=$listaLibros[0];
+        } else {
+            $devolucion=$listaLibros;
+        }
+        return $devolucion;
     }
 
     //returns true if $id is a valid id for a book
