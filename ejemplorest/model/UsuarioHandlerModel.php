@@ -28,7 +28,7 @@ class UsuarioHandlerModel
 
         //If the $id is valid or the client asks for the collection ($id is null)
         if ($valid === true || $id == null) {
-            $query = "SELECT ID, Nombre, Password, TipoUsuario FROM Usuarios";
+            $query = "SELECT id, nombre, password, tipousuario FROM usuarios";
 
             if ($id != null) {
                 $query = $query . " WHERE ID = ?";
@@ -54,10 +54,10 @@ class UsuarioHandlerModel
             // PROBABLY THE PROBLEM IS THAT MYSQLND DRIVER IS NEEDED AND WAS NOT AVAILABLE IN THE SERVER:
             // http://stackoverflow.com/questions/10466530/mysqli-prepared-statement-unable-to-get-result
 
-            $prep_query->bind_result($cod, $tit, $pag);
+            $prep_query->bind_result($id, $nombre, $password, $tipoUsuario);
             while ($prep_query->fetch()) {
-                $tit = utf8_encode($tit);
-                $usuario = new UsuarioModel($tit, $pag, $cod);
+                //$nombre = utf8_encode($tit);
+                $usuario = new UsuarioModel($nombre, $password, $tipoUsuario, $id);
                 $listaUsuarios[] = $usuario;
             }
 
@@ -70,9 +70,9 @@ class UsuarioHandlerModel
         $db_connection->close();
 
         if ($id!=null){
-            $devolucion=$listaLibros[0];
+            $devolucion=$listaUsuarios[0];
         } else {
-            $devolucion=$listaLibros;
+            $devolucion=$listaUsuarios;
         }
         return $devolucion;
     }
@@ -98,15 +98,17 @@ class UsuarioHandlerModel
      * Salidas: Un booleano
      * Postcondiciones: El booleano será verdadero si el libro se ha insertado correctamente
      * */
-    public static function insertLibro(LibrosModel $libro){
+    public static function insertUsuario(UsuarioModel $usuario){
         $insertado=false;
         $conexion=DatabaseModel::getInstance();
         $mySqlConnection=$conexion->getConnection();
-        $query="Insert INTO Libros (titulo, NumeroPaginas) values(?, ?)";
+        $query="Insert INTO Usuarios (Nombre, Password, TipoUsuario) values(?, ?, ?)";
         $preparedStatement=$mySqlConnection->prepare($query);
-        $titulo=$libro->getTitulo();
-        $paginas=$libro->getNumpag();
-        $preparedStatement->bind_param('si', $titulo, $paginas);
+        $nombre=$usuario->getNombre();
+        $password=crypt($usuario->getPassword());
+        //$password->crypt
+        $tipoUsuario=$usuario->getTipoUsuario();
+        $preparedStatement->bind_param('ssi', $nombre, $password, $tipoUsuario);
         $preparedStatement->execute();
         if($preparedStatement->affected_rows>0){
             $insertado=true;
@@ -121,17 +123,17 @@ class UsuarioHandlerModel
     * Salidas: Un booleano
     * Postcondiciones: El booleano será verdadero si el libro se ha insertado correctamente
     * */
-    public static function updateLibro(LibrosModel $libro){
+    public static function updateUsuario(UsuarioModel $usuario){
         $actualizado=false;
         $conexion=DatabaseModel::getInstance();
         $mySqlConnection=$conexion->getConnection();
-        $query="Update Libros set Titulo=?, NumeroPaginas=? where Codigo=?";
+        $query="Update Usuarios set Nombre=?, Password=? TipoUsuario=? where ID=?";
         $preparedStatement=$mySqlConnection->prepare($query);
 
-        $titulo=$libro->getTitulo();
-        $paginas=$libro->getNumpag();
-        $codigo=$libro->getCodigo();
-        $preparedStatement->bind_param('sii', $titulo, $paginas, $codigo);
+        $nombre=$usuario->getNombre();
+        $password=$usuario->getPassword();
+        $tipoUsuario=$usuario->getTipoUsuario();
+        $preparedStatement->bind_param('ssi', $nombre, $password, $tipoUsuario);
 
         if($preparedStatement->execute()){
             $actualizado=true;
@@ -149,11 +151,11 @@ class UsuarioHandlerModel
     * Salidas: Un booleano
     * Postcondiciones: El booleano será verdadero si el libro se ha insertado correctamente
     * */
-    public static function deleteLibro(int $id){
+    public static function deleteUsuario(int $id){
         $eliminado=false;
         $conexion=DatabaseModel::getInstance();
         $mySqlConnection=$conexion->getConnection();
-        $query="Delete from Libros where Codigo=?";
+        $query="Delete from Usuarios where ID=?";
         $preparedStatement=$mySqlConnection->prepare($query);
 
         $preparedStatement->bind_param('i', $id);

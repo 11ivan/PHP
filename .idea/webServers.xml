@@ -3,10 +3,10 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="e64702b4-19fd-4b60-affc-d9be7da1c1ca" name="xampp" url="http://localhost/proyectos">
-        <fileTransfer port="0" mountedRoot="/opt/lampp/htdocs/proyectos" accessType="MOUNT" />
+        <fileTransfer port="0" mountedRoot="C:\opt\lampp\htdocs\proyectos" accessType="MOUNT" />
       </webServer>
       <webServer id="dfff4a95-7dfb-4d98-9750-0ed7056808dd" name="xamppWindows" url="http://localhost/proyectos">
-        <fileTransfer port="0" mountedRoot="$USER_HOME$/D:\xampp\htdocs\proyectos" accessType="MOUNT" />
+        <fileTransfer port="0" mountedRoot="D:\xampp\htdocs\proyectos" accessType="MOUNT" />
       </webServer>
     </option>
   </component>
