@@ -28,7 +28,7 @@ class UsuarioHandlerModel
 
         //If the $id is valid or the client asks for the collection ($id is null)
         if ($valid === true || $id == null) {
-            $query = "SELECT id, nombre, password, tipousuario FROM usuarios";
+            $query = "SELECT ID, Nombre, Password, TipoUsuario FROM Usuarios";
 
             if ($id != null) {
                 $query = $query . " WHERE ID = ?";
@@ -43,7 +43,7 @@ class UsuarioHandlerModel
             //In this example we expose primary keys considering pedagogical reasons
 
             if ($id != null) {
-                $prep_query->bind_param('s', $id);
+                $prep_query->bind_param('i', $id);
             }
 
             $prep_query->execute();
@@ -69,11 +69,18 @@ class UsuarioHandlerModel
         }
         $db_connection->close();
 
-        if ($id!=null){
+        /*if ($id!=null){
+            $devolucion=$listaUsuarios[0];
+        } else {
+            $devolucion=$listaUsuarios;
+        }*/
+
+        if (count($listaUsuarios)==0){
             $devolucion=$listaUsuarios[0];
         } else {
             $devolucion=$listaUsuarios;
         }
+
         return $devolucion;
     }
 
@@ -105,7 +112,7 @@ class UsuarioHandlerModel
         $query="Insert INTO Usuarios (Nombre, Password, TipoUsuario) values(?, ?, ?)";
         $preparedStatement=$mySqlConnection->prepare($query);
         $nombre=$usuario->getNombre();
-        $password=crypt($usuario->getPassword());
+        $password=password_hash($usuario->getPassword(), PASSWORD_DEFAULT);
         //$password->crypt
         $tipoUsuario=$usuario->getTipoUsuario();
         $preparedStatement->bind_param('ssi', $nombre, $password, $tipoUsuario);
@@ -164,6 +171,10 @@ class UsuarioHandlerModel
             $eliminado=true;
         }
         return $eliminado;
+    }
+
+    public static function exists($nombre, $password){
+
     }
 
 

@@ -12,6 +12,7 @@ class Request
     //in $accept we store the format of the content that the server will send
     private $accept;
 
+
     public function __construct($verb, $url_elements, $query_string, $body, $content_type, $accept)
     {
         $this->verb = $verb;

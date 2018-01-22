@@ -61,6 +61,9 @@ if (isset($_SERVER['HTTP_ACCEPT'])) {
     $accept = $_SERVER['HTTP_ACCEPT'];
 }
 
+//$_SERVER['PHP_AUTH_USER'];
+
+
 
 $req = new Request($verb, $url_elements, $query_string, $body, $content_type, $accept);
 
