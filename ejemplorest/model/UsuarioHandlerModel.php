@@ -173,8 +173,27 @@ class UsuarioHandlerModel
         return $eliminado;
     }
 
-    public static function exists($nombre, $password){
 
+    public static function validateUser($nombre, $password){
+        $valido=false;
+        $conexion=DatabaseModel::getInstance();
+        $mySqlConnection=$conexion->getConnection();
+        $query="Select Nombre, Password From Usuarios where Nombre=? and Password=?";
+        $preparedStatement=$mySqlConnection->prepare($query);
+
+        //Hash al password de la peticion
+        $hashPass=password_hash($password, PASSWORD_DEFAULT);
+
+        $preparedStatement->bind_param('ss', $nombre, $password);
+
+        $preparedStatement->execute();
+
+        $result=$preparedStatement->get_result();
+
+        if($result->num_rows>0){
+            $valido=true;
+        }
+        return $valido;
     }
 
 

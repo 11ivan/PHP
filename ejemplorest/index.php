@@ -61,7 +61,12 @@ if (isset($_SERVER['HTTP_ACCEPT'])) {
     $accept = $_SERVER['HTTP_ACCEPT'];
 }
 
+$autenticacion=new Autenticacion();
+$autenticacion->setUser($_SERVER['PHP_AUTH_USER']);
+$autenticacion->setPassword($_SERVER['PHP_AUTH_PW']);
+
 //$_SERVER['PHP_AUTH_USER'];
+
 
 
 
