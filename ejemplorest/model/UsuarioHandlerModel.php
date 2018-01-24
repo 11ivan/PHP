@@ -178,20 +178,24 @@ class UsuarioHandlerModel
         $valido=false;
         $conexion=DatabaseModel::getInstance();
         $mySqlConnection=$conexion->getConnection();
-        $query="Select Nombre, Password From Usuarios where Nombre=? and Password=?";
+        $query="Select Nombre, Password From Usuarios where Nombre=?";
         $preparedStatement=$mySqlConnection->prepare($query);
 
         //Hash al password de la peticion
-        $hashPass=password_hash($password, PASSWORD_DEFAULT);
+        //$hashPass=password_hash($password, PASSWORD_DEFAULT);
 
-        $preparedStatement->bind_param('ss', $nombre, $password);
+        $preparedStatement->bind_param('s', $nombre);
 
         $preparedStatement->execute();
 
         $result=$preparedStatement->get_result();
 
         if($result->num_rows>0){
-            $valido=true;
+            while($row=$result->fetch_assoc()) {
+                if(password_verify($password, $row['Password'])) {
+                    $valido = true;
+                }
+            }
         }
         return $valido;
     }

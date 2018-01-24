@@ -13,11 +13,11 @@ class Autenticacion
     private $password;
 
 
-    function __construct($user, $password)
+    /*function __construct($user, $password)
     {
         $this->user=$user;
         $this->password=$password;
-    }
+    }*/
 
     /**
      * @return mixed
@@ -54,7 +54,7 @@ class Autenticacion
 
 
     public function validarUsuario(){
-        UsuarioHandlerModel::validateUser($this->user, $this->password);
+      return UsuarioHandlerModel::validateUser($this->user, $this->password);
     }
 
 }

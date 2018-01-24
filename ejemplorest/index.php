@@ -2,6 +2,7 @@
 
 require_once "Request.php";
 require_once "Response.php";
+require_once __DIR__ . '/model/Autenticacion.php';
 
 //Autoload rules
 spl_autoload_register('apiAutoload');
@@ -62,8 +63,10 @@ if (isset($_SERVER['HTTP_ACCEPT'])) {
 }
 
 $autenticacion=new Autenticacion();
-$autenticacion->setUser($_SERVER['PHP_AUTH_USER']);
-$autenticacion->setPassword($_SERVER['PHP_AUTH_PW']);
+$user=$_SERVER['PHP_AUTH_USER'];
+$pass=$_SERVER['PHP_AUTH_PW'];
+$autenticacion->setUser($user);
+$autenticacion->setPassword($pass);
 
 //$_SERVER['PHP_AUTH_USER'];
 
@@ -72,19 +75,23 @@ $autenticacion->setPassword($_SERVER['PHP_AUTH_PW']);
 
 $req = new Request($verb, $url_elements, $query_string, $body, $content_type, $accept);
 
-
+if($autenticacion->validarUsuario()) {
 // route the request to the right place
-$controller_name = ucfirst($url_elements[1]) . 'Controller';
-if (class_exists($controller_name)) {
-    $controller = new $controller_name();
-    $action_name = 'manage' . ucfirst(strtolower($verb)) . 'Verb';
-    $controller->$action_name($req);
-    //$result = $controller->$action_name($req);
-    //print_r($result);
-} //If class does not exist, we will send the request to NotFoundController
-else {
-    $controller = new NotFoundController();
-    $controller->manage($req); //We don't care about the HTTP verb
+    $controller_name = ucfirst($url_elements[1]) . 'Controller';
+    if (class_exists($controller_name)) {
+        $controller = new $controller_name();
+        $action_name = 'manage' . ucfirst(strtolower($verb)) . 'Verb';
+        $controller->$action_name($req);
+        //$result = $controller->$action_name($req);
+        //print_r($result);
+    } //If class does not exist, we will send the request to NotFoundController
+    else {
+        $controller = new NotFoundController();
+        $controller->manage($req); //We don't care about the HTTP verb
+    }
+}else{
+    $controller = new NotAuthenticationController();
+    $controller->manage($req);
 }
 
 //DEBUG / TESTING:
