@@ -53,7 +53,7 @@ class UsuarioController extends Controller
             $code="400";
             $usuario=null;
         }
-        $response = new Response($code, null, $usuario, $request->getAccept());
+        $response = new Response($code, null, null, $request->getAccept());
         $response->generate();
     }
 

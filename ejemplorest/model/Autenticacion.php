@@ -54,7 +54,17 @@ class Autenticacion
 
 
     public function validarUsuario(){
-      return UsuarioHandlerModel::validateUser($this->user, $this->password);
+        $result=usuarioHandlerModel::validateUser($this->user, $this->password);
+        $valido=false;
+
+        if($result->num_rows>0){
+            while($row=$result->fetch_assoc()) {
+                if(password_verify($password, $row['Password'])) {
+                    $valido = true;
+                }
+            }
+        }
+      return $valido;
     }
 
 }
