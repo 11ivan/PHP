@@ -3,6 +3,8 @@
 require_once "Request.php";
 require_once "Response.php";
 require_once __DIR__ . '/model/Autenticacion.php';
+require_once __DIR__ . '/model/Token.php';
+
 
 //Autoload rules
 spl_autoload_register('apiAutoload');
@@ -76,6 +78,13 @@ $autenticacion->setPassword($pass);
 $req = new Request($verb, $url_elements, $query_string, $body, $content_type, $accept);
 
 if($autenticacion->validarUsuario()) {
+
+    //Si el usuario se autenticó correctamente generamos el token
+    $token=new Token();
+
+    $token->generateToken();
+
+
 // route the request to the right place
     $controller_name = ucfirst($url_elements[1]) . 'Controller';
     if (class_exists($controller_name)) {
@@ -89,6 +98,7 @@ if($autenticacion->validarUsuario()) {
         $controller = new NotFoundController();
         $controller->manage($req); //We don't care about the HTTP verb
     }
+
 }else{
     $controller = new NotAuthenticationController();
     $controller->manage($req);

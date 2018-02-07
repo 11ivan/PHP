@@ -1,5 +1,7 @@
 <?php
 
+require_once "UsuarioHandlerModel.php";
+
 /**
  * Created by PhpStorm.
  * User: icastillo
@@ -59,7 +61,7 @@ class Autenticacion
 
         if($result->num_rows>0){
             while($row=$result->fetch_assoc()) {
-                if(password_verify($password, $row['Password'])) {
+                if(password_verify($this->password, $row['Password'])) {
                     $valido = true;
                 }
             }
