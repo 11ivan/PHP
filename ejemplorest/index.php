@@ -40,6 +40,40 @@ function apiAutoload($classname)
 }
 
 
+//Metodos para recoger token peticion
+function getAuthorizationHeader(){
+    $headers = null;
+    if (isset($_SERVER['Authorization'])) {
+        $headers = trim($_SERVER["Authorization"]);
+    }
+    else if (isset($_SERVER['HTTP_AUTHORIZATION'])) { //Nginx or fast CGI
+        $headers = trim($_SERVER["HTTP_AUTHORIZATION"]);
+    } elseif (function_exists('apache_request_headers')) {
+        $requestHeaders = apache_request_headers();
+        // Server-side fix for bug in old Android versions (a nice side-effect of this fix means we don't care about capitalization for Authorization)
+        $requestHeaders = array_combine(array_map('ucwords', array_keys($requestHeaders)), array_values($requestHeaders));
+        //print_r($requestHeaders);
+        if (isset($requestHeaders['Authorization'])) {
+            $headers = trim($requestHeaders['Authorization']);
+        }
+    }
+    return $headers;
+}
+/**
+ * get access token from header
+ * */
+function getBearerToken() {
+    $headers = getAuthorizationHeader();
+    $token=null;
+    // HEADER: Get the access token from the header
+    if (!empty($headers)) {
+        if (preg_match('/Bearer\s(\S+)/', $headers, $matches)) {
+            $token= $matches[1];
+        }
+    }
+    return $token;
+}
+
 //Let's retrieve all the information from the request
 $verb = $_SERVER['REQUEST_METHOD'];
 //IMPORTANT: WITH CGI OR FASTCGI, PATH_INFO WILL NOT BE AVAILABLE!!!
@@ -64,45 +98,45 @@ if (isset($_SERVER['HTTP_ACCEPT'])) {
     $accept = $_SERVER['HTTP_ACCEPT'];
 }
 
+$token = new Token();
 $autenticacion=new Autenticacion();
 $user=$_SERVER['PHP_AUTH_USER'];
 $pass=$_SERVER['PHP_AUTH_PW'];
 $autenticacion->setUser($user);
 $autenticacion->setPassword($pass);
 
-//$_SERVER['PHP_AUTH_USER'];
-
-
-
-
 $req = new Request($verb, $url_elements, $query_string, $body, $content_type, $accept);
 
-if($autenticacion->validarUsuario()) {
+if($autenticacion->getUser()==null) {
+    //Recogemos el token
+    $tokenPeticion = getBearerToken();
+}
+    if ($autenticacion->validarUsuario() || $token->Check($tokenPeticion)) {
 
-    //Si el usuario se autenticó correctamente generamos el token
-    $token=new Token();
-
-    $token->generateToken();
+        //Si el usuario se autenticó correctamente generamos el token
+        //$token = new Token();
+        //$data = $autenticacion->getUser();
+        //$tokenGenerado = $token->SignIn($data);
 
 
 // route the request to the right place
-    $controller_name = ucfirst($url_elements[1]) . 'Controller';
-    if (class_exists($controller_name)) {
-        $controller = new $controller_name();
-        $action_name = 'manage' . ucfirst(strtolower($verb)) . 'Verb';
-        $controller->$action_name($req);
-        //$result = $controller->$action_name($req);
-        //print_r($result);
-    } //If class does not exist, we will send the request to NotFoundController
-    else {
-        $controller = new NotFoundController();
-        $controller->manage($req); //We don't care about the HTTP verb
-    }
+        $controller_name = ucfirst($url_elements[1]) . 'Controller';
+        if (class_exists($controller_name)) {
+            $controller = new $controller_name();
+            $action_name = 'manage' . ucfirst(strtolower($verb)) . 'Verb';
+            $controller->$action_name($req);
+            //$result = $controller->$action_name($req);
+            //print_r($result);
+        } //If class does not exist, we will send the request to NotFoundController
+        else {
+            $controller = new NotFoundController();
+            $controller->manage($req); //We don't care about the HTTP verb
+        }
 
-}else{
-    $controller = new NotAuthenticationController();
-    $controller->manage($req);
-}
+    } else {
+        $controller = new NotAuthenticationController();
+        $controller->manage($req);
+    }
 
 //DEBUG / TESTING:
 //echo "<br/>URL_ELEMENTS:" ;

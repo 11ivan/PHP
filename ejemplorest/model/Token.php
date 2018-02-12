@@ -21,7 +21,7 @@ class Token
     /**
      *
      */
-    function generateToken(){
+    /*function generateToken(){
         $time = time();
         $key = 'my_secret_key';
         $token = array(
@@ -32,12 +32,24 @@ class Token
                 'name' => 'Eduardo'
             ]
         );
-        $jwt = JWT::encode($token, $key);
+        return $jwt = JWT::encode($token, $key);
         $data = JWT::decode($jwt, $key, array('HS256'));
         var_dump($data);
-    }
+    }*/
 
-    public static function SignIn($data)
+    /*function generateToken(){
+        $time = time();
+        $key = 'my_secret_key';
+        $token = array(
+            'iat' => $time, // Tiempo que inició el token
+            'exp' => $time + (60*60), // Tiempo que expirará el token (+1 hora)
+        );
+        return $jwt = JWT::encode($token, $key);
+        //$data = JWT::decode($jwt, $key, array('HS256'));
+        //var_dump($data);
+    }*/
+
+    /*function SignIn($data)
     {
         $time = time();
 
@@ -48,9 +60,20 @@ class Token
         );
 
         return JWT::encode($token, self::$secret_key);
+    }*/
+
+    function generateToken()
+    {
+        $time = time();
+
+        $token = array(
+            'exp' => $time + (60*60),
+            'aud' => self::Aud(),
+        );
+        return JWT::encode($token, self::$secret_key);
     }
 
-    public static function Check($token)
+    /*function Check($token)
     {
         if(empty($token))
         {
@@ -67,6 +90,29 @@ class Token
         {
             throw new Exception("Invalid user logged in.");
         }
+    }*/
+
+    function Check($token)
+    {
+        $valido=true;
+        if(empty($token))
+        {
+            throw new Exception("Invalid token supplied.");
+            $valido=false;
+        }
+
+        $decode = JWT::decode(
+            $token,
+            self::$secret_key,
+            self::$encrypt
+        );
+
+        if($decode->aud !== self::Aud())
+        {
+            throw new Exception("Invalid user logged in.");
+            $valido=false;
+        }
+        return $valido;
     }
 
     public static function GetData($token)
