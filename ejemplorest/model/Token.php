@@ -4,6 +4,8 @@ use Firebase\JWT\JWT as JWT;
 //require_once "Firebase\JWT";
 $upOne = realpath(__DIR__ . '/..');
 require_once  $upOne.'/phpjwtmaster/src/JWT.php';
+$upOne2 = realpath(__DIR__ . '/..');
+require_once  $upOne2.'/phpjwtmaster/src/SignatureInvalidException.php';
 
 /**
  * Created by PhpStorm.
@@ -49,19 +51,6 @@ class Token
         //var_dump($data);
     }*/
 
-    /*function SignIn($data)
-    {
-        $time = time();
-
-        $token = array(
-            'exp' => $time + (60*60),
-            'aud' => self::Aud(),
-            'data' => $data
-        );
-
-        return JWT::encode($token, self::$secret_key);
-    }*/
-
     function generateToken()
     {
         $time = time();
@@ -73,44 +62,31 @@ class Token
         return JWT::encode($token, self::$secret_key);
     }
 
-    /*function Check($token)
-    {
-        if(empty($token))
-        {
-            throw new Exception("Invalid token supplied.");
-        }
-
-        $decode = JWT::decode(
-            $token,
-            self::$secret_key,
-            self::$encrypt
-        );
-
-        if($decode->aud !== self::Aud())
-        {
-            throw new Exception("Invalid user logged in.");
-        }
-    }*/
-
     function Check($token)
     {
         $valido=true;
         if(empty($token))
         {
-            throw new Exception("Invalid token supplied.");
+            //throw new Exception("Invalid token supplied.");
             $valido=false;
         }
 
-        $decode = JWT::decode(
-            $token,
-            self::$secret_key,
-            self::$encrypt
-        );
+        if($valido) {
+            try {
+                $decode = JWT::decode(
+                    $token,
+                    self::$secret_key,
+                    self::$encrypt
+                );
+            }catch (Exception $e){
+                $valido=false;
+            }
 
-        if($decode->aud !== self::Aud())
-        {
-            throw new Exception("Invalid user logged in.");
-            $valido=false;
+            if($valido && $decode->aud !== self::Aud())
+            {
+                //throw new Exception("Invalid user logged in.");
+                $valido=false;
+            }
         }
         return $valido;
     }

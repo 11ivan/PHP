@@ -100,8 +100,14 @@ if (isset($_SERVER['HTTP_ACCEPT'])) {
 
 $token = new Token();
 $autenticacion=new Autenticacion();
-$user=$_SERVER['PHP_AUTH_USER'];
-$pass=$_SERVER['PHP_AUTH_PW'];
+$user=null;
+$pass=null;
+$tokenPeticion=null;
+
+if(isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])){
+    $user=$_SERVER['PHP_AUTH_USER'];
+    $pass=$_SERVER['PHP_AUTH_PW'];
+}
 $autenticacion->setUser($user);
 $autenticacion->setPassword($pass);
 
@@ -111,32 +117,25 @@ if($autenticacion->getUser()==null) {
     //Recogemos el token
     $tokenPeticion = getBearerToken();
 }
-    if ($autenticacion->validarUsuario() || $token->Check($tokenPeticion)) {
-
-        //Si el usuario se autenticó correctamente generamos el token
-        //$token = new Token();
-        //$data = $autenticacion->getUser();
-        //$tokenGenerado = $token->SignIn($data);
-
+if ($autenticacion->validarUsuario() || $token->Check($tokenPeticion)) {
 
 // route the request to the right place
-        $controller_name = ucfirst($url_elements[1]) . 'Controller';
-        if (class_exists($controller_name)) {
-            $controller = new $controller_name();
-            $action_name = 'manage' . ucfirst(strtolower($verb)) . 'Verb';
-            $controller->$action_name($req);
-            //$result = $controller->$action_name($req);
-            //print_r($result);
-        } //If class does not exist, we will send the request to NotFoundController
-        else {
-            $controller = new NotFoundController();
-            $controller->manage($req); //We don't care about the HTTP verb
-        }
-
-    } else {
-        $controller = new NotAuthenticationController();
-        $controller->manage($req);
+    $controller_name = ucfirst($url_elements[1]) . 'Controller';
+    if (class_exists($controller_name)) {
+        $controller = new $controller_name();
+        $action_name = 'manage' . ucfirst(strtolower($verb)) . 'Verb';
+        $controller->$action_name($req);
+        //$result = $controller->$action_name($req);
+        //print_r($result);
+    } //If class does not exist, we will send the request to NotFoundController
+    else {
+        $controller = new NotFoundController();
+        $controller->manage($req); //We don't care about the HTTP verb
     }
+} else {
+    $controller = new NotAuthenticationController();
+    $controller->manage($req);
+}
 
 //DEBUG / TESTING:
 //echo "<br/>URL_ELEMENTS:" ;
