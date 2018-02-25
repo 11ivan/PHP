@@ -1,5 +1,15 @@
 <?php
 
+/*
+200 OK
+201 Created
+204 No Content
+400 Bad Request
+401 Unauthorized
+404 Not Found
+405 Method Not Allowed
+*/
+
 require_once "Request.php";
 require_once "Response.php";
 require_once __DIR__ . '/model/Autenticacion.php';
@@ -98,6 +108,8 @@ if (isset($_SERVER['HTTP_ACCEPT'])) {
     $accept = $_SERVER['HTTP_ACCEPT'];
 }
 
+$req = new Request($verb, $url_elements, $query_string, $body, $content_type, $accept);
+
 $token = new Token();
 $autenticacion=new Autenticacion();
 $user=null;
@@ -111,12 +123,11 @@ if(isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])){
 $autenticacion->setUser($user);
 $autenticacion->setPassword($pass);
 
-$req = new Request($verb, $url_elements, $query_string, $body, $content_type, $accept);
-
 if($autenticacion->getUser()==null) {
-    //Recogemos el token
+    //Si no viene Usuario Recogemos el token
     $tokenPeticion = getBearerToken();
 }
+
 if ($autenticacion->validarUsuario() || $token->Check($tokenPeticion)) {
 
 // route the request to the right place
